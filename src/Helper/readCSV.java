@@ -1,36 +1,42 @@
 package Helper;
 
 import Assignment.Student;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class readCSV {
-    public static ArrayList<Student> readStudents(String filename) {
-        ArrayList<Student> students = new ArrayList<>();
-
-        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
-            String line;
-            br.readLine(); // Bỏ dòng tiêu đề
-
+    public static List<Student> csvToArray(String filePath) {
+        List<Student> students = new ArrayList<>();
+        BufferedReader br = null;
+        String line = "";
+        String cvsSplitBy = ",";
+        // Implement logic to read CSV file and populate the students list
+        try {
+            br = new BufferedReader(new FileReader(filePath));
             while ((line = br.readLine()) != null) {
-                String[] parts = line.split(",");
-                if (parts.length == 3) {
-                    String id = parts[0];
-                    String name = parts[1];
-                    double score = Double.parseDouble(parts[2]);
-                    students.add(new Student(id, name, score));
+                // Tách từng dòng thành mảng các phần tử
+                // String[] student = line.split(cvsSplitBy);
+                // System.out.println(Arrays.toString(student));
+                Student student = new Student(line.split(cvsSplitBy));
+                students.add(student);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    // e.printStackTrace();  
+
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
 
         return students;
     }
 
-    public static void writeStudents(String string, ArrayList<Student> students) {
-        throw new UnsupportedOperationException("Unimplemented method 'writeStudents'");
-    }
 }

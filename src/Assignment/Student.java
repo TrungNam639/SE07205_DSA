@@ -3,37 +3,58 @@ package Assignment;
 public class Student {
     private String id;
     private String name;
-    private double score;
+    private double mark;
+    private String rank; // Trường dữ liệu suy diễn
 
-    public Student(String id, String name, double score) {
-        if (id == null || id.trim().isEmpty()) {
-            throw new IllegalArgumentException("ID không được để trống.");
-        }
-        if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("Tên không được để trống.");
-        }
-        if (score < 0 || score > 10) {
-            throw new IllegalArgumentException("Điểm phải nằm trong khoảng từ 0 đến 10.");
-        }
+    public Student(String id, String name, double mark) {
         this.id = id;
         this.name = name;
-        this.score = score;
+        this.mark = mark;
+        this.rank = calculateRank(); // Calculate rank based on mark
     }
 
-    public String getId() { return id; }
-    public String getName() { return name; }
-    public double getScore() { return score; }
+    public Student(String[] student) {
+        this.id = student[0];
+        this.name = student[1];
+        this.mark = Double.parseDouble(student[2]);
+        this.rank = calculateRank(); // Calculate rank based on mark
+    }
+
+    private String calculateRank() {
+        if (mark >= 0 && mark <= 5) {
+            return "fail";
+        } else if (mark > 5 && mark <= 7) {
+            return "pass";
+        } else if (mark > 7 && mark <= 9) {
+            return "good";
+        } else if (mark > 9 && mark <= 10) {
+            return "excellent";
+        } else {
+            return "invalid";
+        }
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getMark() {
+        return mark;
+    }
 
     public String getRank() {
-        if (score < 5.0) return "Yếu";
-        else if (score < 6.5) return "Trung bình";
-        else if (score < 7.5) return "Khá";
-        else if (score < 9.0) return "Giỏi";
-        else return "Xuất sắc";
+        return rank;
     }
 
-    @Override
-    public String toString() {
-        return String.format("ID: %s | Name: %s | Score: %.2f | Rank: %s", id, name, score, getRank());
+    public void getStudent() {
+        System.out.println("ID: " + this.getId());
+        System.out.println("Name: " + this.getName());
+        System.out.println("Mark: " + this.getMark());
     }
+
+    // Getters and setters for other fields (optional)
 }
